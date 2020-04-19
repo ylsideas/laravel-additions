@@ -1,0 +1,9 @@
+<?php
+
+namespace DummyNamespace;
+
+use Exception;
+
+class DummyClass extends Exception
+{
+}

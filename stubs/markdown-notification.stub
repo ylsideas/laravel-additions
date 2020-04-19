@@ -1,0 +1,41 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class DummyClass extends Notification
+{
+    use Queueable;
+
+    /**
+     * @param mixed $notifiable
+     * @return array
+     */
+    public function via($notifiable) : array
+    {
+        return ['mail'];
+    }
+
+    /**
+     * @param mixed $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable) : MailMessage
+    {
+        return (new MailMessage)->markdown('DummyView');
+    }
+
+    /**
+     * @param mixed $notifiable
+     * @return array
+     */
+    public function toArray($notifiable) : array
+    {
+        return [
+        ];
+    }
+}

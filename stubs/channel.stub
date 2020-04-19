@@ -1,0 +1,16 @@
+<?php
+
+namespace DummyNamespace;
+
+use NamespacedDummyUserModel;
+
+class DummyClass
+{
+    /**
+     * @param  \NamespacedDummyUserModel  $user
+     * @return array|bool
+     */
+    public function join(DummyUser $user)
+    {
+    }
+}
