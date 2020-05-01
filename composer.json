@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": "^7.2.5",
-        "illuminate/support": "^7.0"
+        "illuminate/support": "^7.0",
+        "nunomaduro/laravel-mojito": "^0.2.4"
     },
     "require-dev": {
         "orchestra/testbench": "^5.0",
