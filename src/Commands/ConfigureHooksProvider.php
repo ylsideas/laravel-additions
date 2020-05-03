@@ -42,7 +42,16 @@ class ConfigureHooksProvider extends Command
 
     public function info($string, $verbosity = null)
     {
-        $this->line('Laravel Additions Hooks Provider installed, add to config/app.php', 'info', $verbosity);
+        $this->line(
+            'Laravel Additions Hooks Provider installed, now add to config/app.php!',
+            'info',
+            $verbosity
+        );
+    }
+
+    public function error($string, $verbosity = null)
+    {
+        $this->line('Laravel Additions Hooks Provider already installed!', 'error', $verbosity);
     }
 
     protected function getArguments()

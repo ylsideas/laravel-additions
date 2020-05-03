@@ -33,6 +33,10 @@ class SetupApplication
 
     public function execute(bool $firstTime, InputInterface $input, OutputInterface $output)
     {
+        if (! is_callable($this->callable)) {
+            throw new \RuntimeException('On setup hook has not been configured.');
+        }
+
         return call_user_func($this->callable, $firstTime, $input, $output);
     }
 
