@@ -15,7 +15,7 @@ class LaravelAdditionsHooksServiceProvider extends ServiceProvider
     public function boot()
     {
         Setup::on(function (bool $inital, InputInterface $input, OutputInterface $output) {
-            $this->onSetup($inital, $input, $output);
+            return $this->onSetup($inital, $input, $output);
         });
 
         Setup::beforeTesting(function (InputInterface $input, OutputInterface $output) {
@@ -35,9 +35,7 @@ class LaravelAdditionsHooksServiceProvider extends ServiceProvider
     }
 
     public function onSetup(bool $inital, InputInterface $input, OutputInterface $output) {
-        File::cleanDirectory(storage_path('logs'));
-
-        Artisan::call('migrate:fresh', ['seed']);
+        return true;
     }
 
     public function beforeTesting(InputInterface $input, OutputInterface $output) {

@@ -26,10 +26,11 @@ class Setup extends Command
     {
         if ($application->execute((bool) $this->option('initial'), $this->input, $this->output)) {
             $this->line($this->option('initial') ? 'Initial Setup complete' : 'Setup complete');
-            return;
+            return 0;
         }
 
-        $this->warn($this->option('initial') ? 'Initial Setup failed' : 'Setup failed');
+        $this->error($this->option('initial') ? 'Initial Setup failed' : 'Setup failed');
+        return 1;
     }
 
     /**

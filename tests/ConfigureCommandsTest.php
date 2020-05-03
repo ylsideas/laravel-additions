@@ -62,4 +62,15 @@ class ConfigureCommandsTest extends TestCase
 
         File::delete(app_path('macros.php'));
     }
+
+    public function testItConfiguresAll()
+    {
+        $this->artisan('configure', ['--all' => true])->assertExitCode(0);
+
+        $this->assertFileExists(app_path('macros.php'));
+        $this->assertFileExists(app_path('helpers.php'));
+
+        File::delete(app_path('macros.php'));
+        File::delete(app_path('helpers.php'));
+    }
 }

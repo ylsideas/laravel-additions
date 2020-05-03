@@ -12,18 +12,18 @@ use YlsIdeas\LaravelAdditions\Support\ManipulatesComposerJson;
 class Configure extends Command
 {
     /**
-     * The console command name.
-     *
      * @var string
      */
-    protected $name = 'configure {--helpers|-p} {--macros|-m} {--hooks|-o} {--all|a}';
+    protected $signature = 'configure
+        {--p|helpers}
+        {--m|macros}
+        {--k|hooks}
+        {--a|all}';
 
     /**
-     * The console command description.
-     *
      * @var string
      */
-    protected $description = 'Configure and make a helpers file';
+    protected $description = 'Configure all additions from YLS Ideas';
 
     public function handle()
     {

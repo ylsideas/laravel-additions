@@ -24,9 +24,11 @@ class SetupApplicationTest extends TestCase
         $setup->on(function (bool $initalised) use (&$flag) {
             $flag = true;
             $this->assertFalse($initalised);
+
+            return true;
         });
 
-        $this->artisan('setup');
+        $this->artisan('setup')->assertExitCode(0);
 
         $this->assertTrue($flag);
     }
@@ -41,9 +43,30 @@ class SetupApplicationTest extends TestCase
         $setup->on(function (bool $initalised) use (&$flag) {
             $flag = true;
             $this->assertTrue($initalised);
+
+            return true;
         });
 
-        $this->artisan('setup', ['--initial' => true]);
+        $this->artisan('setup', ['--initial' => true])->assertExitCode(0);
+
+        $this->assertTrue($flag);
+    }
+
+    public function testSetupProvidesExitCodeOne()
+    {
+        /** @var SetupApplication $setup */
+        $setup = $this->app->make(SetupApplication::class);
+
+        $flag = false;
+
+        $setup->on(function (bool $initalised) use (&$flag) {
+            $flag = true;
+            $this->assertTrue($initalised);
+
+            return false;
+        });
+
+        $this->artisan('setup', ['--initial' => true])->assertExitCode(1);
 
         $this->assertTrue($flag);
     }
@@ -59,9 +82,11 @@ class SetupApplicationTest extends TestCase
             $flag = true;
             $this->assertInstanceOf(InputInterface::class, $input);
             $this->assertInstanceOf(OutputInterface::class, $output);
+
+            return true;
         });
 
-        $this->artisan('setup');
+        $this->artisan('setup')->assertExitCode(0);
 
         $this->assertTrue($flag);
     }
@@ -83,7 +108,7 @@ class SetupApplicationTest extends TestCase
             $this->assertInstanceOf(OutputInterface::class, $output);
         });
 
-        $this->artisan('test');
+        $this->artisan('test')->assertExitCode(0);
 
         $this->assertTrue($flag);
     }
@@ -105,7 +130,7 @@ class SetupApplicationTest extends TestCase
             $this->assertInstanceOf(OutputInterface::class, $output);
         });
 
-        $this->artisan('test');
+        $this->artisan('test')->assertExitCode(0);
 
         $this->assertTrue($flag);
     }
@@ -116,7 +141,7 @@ class SetupApplicationTest extends TestCase
             File::delete(app_path('Providers/LaravelAdditionsServiceProvider.php'));
         }
 
-        $this->artisan('configure:hooks');
+        $this->artisan('configure:hooks')->assertExitCode(0);
 
         $this->assertFileExists(app_path('Providers/LaravelAdditionsServiceProvider.php'));
         $this->assertStringContainsString(

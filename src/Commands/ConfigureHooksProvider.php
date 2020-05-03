@@ -40,6 +40,11 @@ class ConfigureHooksProvider extends Command
         return $rootNamespace.'\Providers';
     }
 
+    public function info($string, $verbosity = null)
+    {
+        $this->line('Laravel Additions Hooks Provider installed, add to config/app.php', 'info', $verbosity);
+    }
+
     protected function getArguments()
     {
         return [];
