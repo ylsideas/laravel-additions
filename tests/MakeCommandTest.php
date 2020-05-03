@@ -29,11 +29,6 @@ class MakeCommandTest extends TestCase
         File::deleteDirectory(base_path('stubs'));
     }
 
-    protected function getPackageProviders($app)
-    {
-        return [LaravelAdditionsServiceProvider::class];
-    }
-
     /**
      * @dataProvider commands
      */
@@ -52,7 +47,7 @@ class MakeCommandTest extends TestCase
                 'make:notification',
                 ['name' => 'Test'],
                 function () {
-                    $this->assertTrue(File::exists(app_path('Notifications/Test.php')));
+                    $this->assertFileExists(app_path('Notifications/Test.php'));
                 },
                 function () {
                     File::deleteDirectory(app_path('Notifications'));
@@ -62,7 +57,7 @@ class MakeCommandTest extends TestCase
                 'make:model',
                 ['name' => 'Test'],
                 function () {
-                    $this->assertTrue(File::exists(app_path('Test.php')));
+                    $this->assertFileExists(app_path('Test.php'));
                 },
                 function () {
                     File::delete(app_path('Test.php'));
@@ -72,7 +67,7 @@ class MakeCommandTest extends TestCase
                 'make:event',
                 ['name' => 'Test'],
                 function () {
-                    $this->assertTrue(File::exists(app_path('Events/Test.php')));
+                    $this->assertFileExists(app_path('Events/Test.php'));
                 },
                 function () {
                     File::deleteDirectory(app_path('Events'));
@@ -82,12 +77,17 @@ class MakeCommandTest extends TestCase
                 'make:listener',
                 ['name' => 'Test'],
                 function () {
-                    $this->assertTrue(File::exists(app_path('Listeners/Test.php')));
+                    $this->assertFileExists(app_path('Listeners/Test.php'));
                 },
                 function () {
                     File::deleteDirectory(app_path('Listeners'));
                 }
             ]
         ];
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [LaravelAdditionsServiceProvider::class];
     }
 }
