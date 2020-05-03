@@ -39,10 +39,6 @@ class LaravelAdditionsServiceProvider extends ServiceProvider
                 __DIR__.'/../config/config.php' => config_path('laravel_additions.php'),
             ], 'additions-config');
 
-            $this->publishes([
-                __DIR__.'/../resources/LaravelAdditionsServiceProvider.php' => config_path('laravel_additions.php'),
-            ], 'additions-config');
-
             $this->commands(
                 collect()
                     ->when(
@@ -78,13 +74,17 @@ class LaravelAdditionsServiceProvider extends ServiceProvider
         }
 
         if (config('laravel_additions.use_custom_make_commands', true)) {
-            foreach ($this->makeCommands as $command => $singleton)
-            $this->extendCommand(
-                $singleton,
-                "\\YlsIdeas\\LaravelAdditions\\Commands\\Make\\{$command}Command"
-            );
+            foreach ($this->makeCommands as $command => $singleton) {
+                $this->extendCommand(
+                    $singleton,
+                    "\\YlsIdeas\\LaravelAdditions\\Commands\\Make\\{$command}Command"
+                );
+            }
             $this->app->extend($singleton, function ($command, $app) {
                 return new Commands\Make\SeederMakeCommand($app['files'], $app['composer']);
+            });
+            $this->app->extend('command.stub.publish', function () {
+                return new Commands\StubPublishCommand();
             });
         }
     }

@@ -31,6 +31,10 @@ class CustomStubsTest extends TestCase
             base_path('stubs/job.stub'),
             $dummy->getStubPath()
         );
+
+        if (File::exists(base_path('stubs'))) {
+            File::deleteDirectory(base_path('stubs'));
+        }
     }
 
     public function testItProvidesThePathForStubsFromTheAppConfig()
@@ -44,5 +48,9 @@ class CustomStubsTest extends TestCase
             resource_path('stubs/job.stub'),
             $dummy->getStubPath()
         );
+
+        if (File::exists(resource_path('stubs'))) {
+            File::deleteDirectory(resource_path('stubs'));
+        }
     }
 }
