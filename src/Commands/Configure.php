@@ -16,7 +16,7 @@ class Configure extends Command
      *
      * @var string
      */
-    protected $name = 'configure {--helpers|-p} {--macros|-m} {--hooks|-o}';
+    protected $name = 'configure {--helpers|-p} {--macros|-m} {--hooks|-o} {--all|a}';
 
     /**
      * The console command description.
@@ -27,13 +27,13 @@ class Configure extends Command
 
     public function handle()
     {
-        if ($this->option('helpers')) {
+        if ($this->option('helpers') || $this->option('all')) {
             $this->call('configure:helpers');
         }
-        if ($this->option('macros')) {
+        if ($this->option('macros') || $this->option('all')) {
             $this->call('configure:macros');
         }
-        if ($this->option('hooks')) {
+        if ($this->option('hooks') || $this->option('all')) {
             $this->call('configure:hooks');
         }
     }
