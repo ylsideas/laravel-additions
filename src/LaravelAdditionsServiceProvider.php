@@ -2,6 +2,7 @@
 
 namespace YlsIdeas\LaravelAdditions;
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -80,7 +81,7 @@ class LaravelAdditionsServiceProvider extends ServiceProvider
                     "\\YlsIdeas\\LaravelAdditions\\Commands\\Make\\{$command}Command"
                 );
             }
-            $this->app->extend($singleton, function ($command, $app) {
+            $this->app->extend('command.seeder.make', function ($command, $app) {
                 return new Commands\Make\SeederMakeCommand($app['files'], $app['composer']);
             });
             $this->app->extend('command.stub.publish', function () {

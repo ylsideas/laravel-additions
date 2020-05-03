@@ -40,7 +40,7 @@ class CustomStubsTest extends TestCase
     public function testItProvidesThePathForStubsFromTheAppConfig()
     {
         File::copyDirectory(__DIR__ . '/../stubs', resource_path('stubs'));
-        Config::set('app.stubs_path', resource_path());
+        Config::set('app.stub_path', resource_path());
         $dummy = new ConfigurableStubsDummy();
         $dummy->laravel = $this->app;
 

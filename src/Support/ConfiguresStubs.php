@@ -22,8 +22,8 @@ trait ConfiguresStubs
     {
         $config = $this->laravel->make('config');
 
-        $customPath = $config->get('app.stubs_path', false) ?
-            $config->get('app.stubs_path') . $stub :
+        $customPath = $config->get('app.stub_path', false) ?
+            $config->get('app.stub_path') . $stub :
             $this->laravel->basePath(trim($stub, '/'));
 
         return File::exists($customPath)

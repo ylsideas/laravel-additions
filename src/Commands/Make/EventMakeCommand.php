@@ -11,7 +11,7 @@ class EventMakeCommand extends BaseCommand
 
     protected function getStub()
     {
-        return $this->resolveStubPath('/stubs/notification.stub');
+        return $this->resolveStubPath('/stubs/event.stub');
     }
 
     protected function resolveStubbingClass()
