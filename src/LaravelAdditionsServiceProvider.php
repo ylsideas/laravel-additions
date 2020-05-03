@@ -3,6 +3,7 @@
 namespace YlsIdeas\LaravelAdditions;
 
 use Illuminate\Database\Migrations\MigrationCreator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use YlsIdeas\LaravelAdditions\Commands;
 
@@ -31,35 +32,52 @@ class LaravelAdditionsServiceProvider extends ServiceProvider
         'TestMake' => 'command.test.make',
     ];
 
-    /**
-     * Bootstrap the application services.
-     */
     public function boot()
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('ylsideas.php'),
-            ], 'config');
+                __DIR__.'/../config/config.php' => config_path('laravel_additions.php'),
+            ], 'additions-config');
 
-            if (config('ylsideas.use_configure_commands', true)) {
-                $this->commands(config('ylsideas.use_configure_commands', [
-                    Commands\Configure::class,
-                    Commands\ConfigureHelpers::class,
-                    Commands\ConfigureMacros::class,
-                ]));
-            }
+            $this->publishes([
+                __DIR__.'/../resources/LaravelAdditionsServiceProvider.php' => config_path('laravel_additions.php'),
+            ], 'additions-config');
 
-            if (config('app.stubs_path')) {
-                $this->app->singleton('migration.creator', function ($app) {
-                    return new MigrationCreator($app['files'], config('app.stubs_path'));
-                });
-            }
+            $this->commands(
+                collect()
+                    ->when(
+                        config('laravel_additions.use_configure_commands', true),
+                        function (Collection $commands) {
+                            return $commands->merge(config('laravel_additions.use_configure_commands', [
+                                Commands\Configure::class,
+                                Commands\ConfigureHelpers::class,
+                                Commands\ConfigureMacros::class,
+                            ]));
+                        }
+                    )
+                    ->when(
+                        config('laravel_additions.use_setup_command', true),
+                        function (Collection $commands) {
+                            return $commands->merge([
+                                Commands\Setup::class,
+                                Commands\ConfigureHooksProvider::class
+                            ]);
+                        }
+                    )
+                    ->toArray()
+            );
         }
     }
 
     public function register()
     {
-        if (config('ylsideas.use_custom_make_commands', true)) {
+        if (config('app.stubs_path')) {
+            $this->app->singleton('migration.creator', function ($app) {
+                return new MigrationCreator($app['files'], config('app.stubs_path'));
+            });
+        }
+
+        if (config('laravel_additions.use_custom_make_commands', true)) {
             foreach ($this->makeCommands as $command => $singleton)
             $this->extendCommand(
                 $singleton,
@@ -71,7 +89,7 @@ class LaravelAdditionsServiceProvider extends ServiceProvider
         }
     }
 
-    public function extendCommand($singleton, $class)
+    protected function extendCommand($singleton, $class)
     {
         $this->app->extend($singleton, function ($command, $app) use ($class) {
             return new $class($app['files']);

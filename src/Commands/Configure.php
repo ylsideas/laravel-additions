@@ -16,7 +16,7 @@ class Configure extends Command
      *
      * @var string
      */
-    protected $name = 'ylsideas:configure {--helpers|-p} {--macros|-m}';
+    protected $name = 'configure {--helpers|-p} {--macros|-m} {--hooks|-o}';
 
     /**
      * The console command description.
@@ -28,10 +28,13 @@ class Configure extends Command
     public function handle()
     {
         if ($this->option('helpers')) {
-            $this->call('ylsideas:configure:helpers');
+            $this->call('configure:helpers');
         }
         if ($this->option('macros')) {
-            $this->call('ylsideas:configure:macros');
+            $this->call('configure:macros');
+        }
+        if ($this->option('hooks')) {
+            $this->call('configure:hooks');
         }
     }
 }
