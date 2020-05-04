@@ -39,10 +39,87 @@ EOT;
         return $callable($mailable);
     }
 
+    public function testItProcessesNotificationViewMailMessageAssertions()
+    {
+        $view = <<<'EOT'
+{{ $message }}
+EOT;
+
+        File::put(resource_path('views/something.blade.php'), $view);
+
+        $notification = new class extends Notification {
+            public function toMail()
+            {
+                return (new MailMessage())
+                    ->view('something', ['message' => 'Hello']);
+            }
+        };
+
+        $notifiable = new class {
+            use Notifiable;
+        };
+
+        $callable = MailViewAssertion::make(function (
+            ViewAssertion $assertion,
+            $channel,
+            $notifiableInstance,
+            $locale
+        ) use ($notifiable) {
+            $assertion->contains('Hello');
+            $this->assertSame($notifiable, $notifiableInstance);
+            $this->assertSame('mail', $channel);
+            $this->assertSame('en', $locale);
+
+            return true;
+        });
+
+        return $callable($notification, 'mail', $notifiable, 'en');
+    }
+
+    public function testItProcessesNotificationMailableAssertions()
+    {
+        $view = <<<'EOT'
+{{ $message }}
+EOT;
+
+        File::put(resource_path('views/something.blade.php'), $view);
+
+        $notification = new class extends Notification {
+            public function toMail()
+            {
+                return new class('something', ['message' => 'Hello']) extends Mailable {
+                    public function __construct($view, $viewData)
+                    {
+                        $this->view = $view;
+                        $this->viewData = $viewData;
+                    }
+                };
+            }
+        };
+
+        $notifiable = new class {
+            use Notifiable;
+        };
+
+        $callable = MailViewAssertion::make(function (
+            ViewAssertion $assertion,
+            $channel,
+            $notifiableInstance,
+            $locale
+        ) use ($notifiable) {
+            $assertion->contains('Hello');
+            $this->assertSame($notifiable, $notifiableInstance);
+            $this->assertSame('mail', $channel);
+            $this->assertSame('en', $locale);
+
+            return true;
+        });
+
+        return $callable($notification, 'mail', $notifiable, 'en');
+    }
+
     public function testItProcessesNotificationAssertions()
     {
-
-
         $notification = new class extends Notification {
             public function toMail()
             {
