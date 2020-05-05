@@ -17,7 +17,7 @@ class ConfigureHelpers extends Command
      *
      * @var string
      */
-    protected $name = 'configure:helpers';
+    protected $signature = 'configure:helpers {--d|dev}';
 
     /**
      * The console command description.
@@ -28,9 +28,19 @@ class ConfigureHelpers extends Command
 
     public function handle(Composer $composer)
     {
+        $path = app_path('helpers.php');
+        $relativePath = 'app/helpers.php';
+        $dev = false;
+
+        if ($this->option('dev')) {
+            $path = base_path('tests/helpers.php');
+            $relativePath = 'tests/helpers.php';
+            $dev = true;
+        }
+
         $this->loadComposerJson();
-        $this->createFile(app_path('helpers.php'));
-        $this->addFile('app/helpers.php');
+        $this->createFile($path);
+        $this->addFile($relativePath, $dev);
         $this->storeComposerJson();
         $composer->dumpAutoloads();
     }

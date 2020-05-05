@@ -17,7 +17,7 @@ class ConfigureMacros extends Command
      *
      * @var string
      */
-    protected $name = 'configure:macros';
+    protected $signature = 'configure:macros {--d|dev}';
 
     /**
      * The console command description.
@@ -28,9 +28,19 @@ class ConfigureMacros extends Command
 
     public function handle(Composer $composer)
     {
+        $path = app_path('macros.php');
+        $relativePath = 'app/macros.php';
+        $dev = false;
+
+        if ($this->option('dev') ?? false) {
+            $path = base_path('tests/macros.php');
+            $relativePath = 'tests/macros.php';
+            $dev = true;
+        }
+
         $this->loadComposerJson();
-        $this->createFile(app_path('macros.php'));
-        $this->addFile('app/macros.php');
+        $this->createFile($path);
+        $this->addFile($relativePath, $dev);
         $this->storeComposerJson();
         $composer->dumpAutoloads();
     }

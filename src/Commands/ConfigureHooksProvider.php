@@ -11,7 +11,7 @@ class ConfigureHooksProvider extends Command
      *
      * @var string
      */
-    protected $name = 'configure:hooks';
+    protected $signature = 'configure:hooks';
 
     /**
      * The console command description.

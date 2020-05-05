@@ -15,4 +15,9 @@ trait ManipulatesComposerJson
     {
         Assert::assertContains($filePath, data_get($this->composerJson, 'autoload.files', []));
     }
+
+    public function assertDevFileAutoLoaded(string $filePath)
+    {
+        Assert::assertContains($filePath, data_get($this->composerJson, 'autoload-dev.files', []));
+    }
 }

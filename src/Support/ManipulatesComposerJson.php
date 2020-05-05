@@ -20,22 +20,25 @@ trait ManipulatesComposerJson
         return $this;
     }
 
-    protected function addFile($file)
+    protected function addFile($file, $dev = false)
     {
-        $files = collect(data_get($this->composerJson, 'autoload.files', []))
+        $files = collect(data_get($this->composerJson, $dev ? 'autoload-dev.files' : 'autoload.files', []))
             ->push($file)
             ->unique()
             ->sort()
             ->values()
             ->toArray();
-        data_set($this->composerJson, 'autoload.files', $files);
+        data_set($this->composerJson, $dev ? 'autoload-dev.files' : 'autoload.files', $files);
 
         return $this;
     }
 
     protected function storeComposerJson()
     {
-        File::put(base_path('composer.json'), json_encode($this->composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        File::put(
+            base_path('composer.json'),
+            json_encode($this->composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+        );
 
         return $this;
     }

@@ -21,6 +21,7 @@ class ConfigureCommandsTest extends TestCase
      */
     public function backupComposerJson()
     {
+        File::makeDirectory(base_path('tests'));
         File::copy(base_path('composer.json'), base_path('composer.json.bk'));
         $this->app->make(Composer::class)->dumpAutoloads();
     }
@@ -32,6 +33,7 @@ class ConfigureCommandsTest extends TestCase
     {
         File::move(base_path('composer.json.bk'), base_path('composer.json'));
         $this->app->make(Composer::class)->dumpAutoloads();
+        File::deleteDirectory(base_path('tests'));
     }
 
     protected function getPackageProviders($app)
@@ -51,6 +53,18 @@ class ConfigureCommandsTest extends TestCase
         File::delete(app_path('helpers.php'));
     }
 
+    public function testItConfiguresTheDevHelpersFile()
+    {
+        $this->artisan('configure:helpers', ['--dev' => true])->assertExitCode(0);
+
+        $this->assertFileExists(base_path('tests/helpers.php'));
+
+        $this->loadComposerJson()
+            ->assertDevFileAutoLoaded('tests/helpers.php');
+
+        File::delete(base_path('tests/helpers.php'));
+    }
+
     public function testItConfiguresTheMacrosFile()
     {
         $this->artisan('configure:macros')->assertExitCode(0);
@@ -61,6 +75,18 @@ class ConfigureCommandsTest extends TestCase
             ->assertFileAutoLoaded('app/macros.php');
 
         File::delete(app_path('macros.php'));
+    }
+
+    public function testItConfiguresTheDevMacrosFile()
+    {
+        $this->artisan('configure:macros', ['--dev' => true])->assertExitCode(0);
+
+        $this->assertFileExists(base_path('tests/macros.php'));
+
+        $this->loadComposerJson()
+            ->assertDevFileAutoLoaded('tests/macros.php');
+
+        File::delete(base_path('tests/macros.php'));
     }
 
     public function testItConfiguresAll()
