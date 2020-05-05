@@ -116,7 +116,7 @@ The default hooks look like the following:
 class LaravelAdditionsServiceProvider extends LaravelAdditionsHooksServiceProvider
 {
     public function onSetup(bool $inital, InputInterface $input, OutputInterface $output) {
-        Artisan::call('migrate:fresh', ['seed']);
+        Artisan::call('migrate:fresh', ['--seed' => true]);
 
         return true;
     }
