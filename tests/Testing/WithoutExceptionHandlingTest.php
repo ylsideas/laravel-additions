@@ -3,6 +3,7 @@
 namespace YlsIdeas\LaravelAdditions\Tests\Testing;
 
 use Orchestra\Testbench\TestCase;
+use YlsIdeas\LaravelAdditions\Testing\SimpleAnnotations;
 use YlsIdeas\LaravelAdditions\Testing\WithoutExceptionHandling;
 
 class WithoutExceptionHandlingTest extends TestCase
@@ -28,6 +29,7 @@ class WithoutExceptionHandlingTest extends TestCase
     protected function makeDummy($name)
     {
         return new class($name) {
+            use SimpleAnnotations;
             use WithoutExceptionHandling;
 
             protected $name;

@@ -5,6 +5,7 @@ namespace YlsIdeas\LaravelAdditions\Tests\Testing;
 
 
 use Orchestra\Testbench\TestCase;
+use YlsIdeas\LaravelAdditions\Testing\SimpleAnnotations;
 use YlsIdeas\LaravelAdditions\Testing\WithApplicationTraitHooks;
 
 class ApplicationTraitHooksTest extends TestCase
@@ -12,6 +13,7 @@ class ApplicationTraitHooksTest extends TestCase
     public function testRegistersHooks()
     {
         $testWithAnnotations = new class() {
+            use SimpleAnnotations;
             use WithApplicationTraitHooks;
 
             public $afterFired = false;

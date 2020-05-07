@@ -7,10 +7,12 @@ namespace YlsIdeas\LaravelAdditions\Tests;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase;
 use YlsIdeas\LaravelAdditions\LaravelAdditionsServiceProvider;
+use YlsIdeas\LaravelAdditions\Testing\SimpleAnnotations;
 use YlsIdeas\LaravelAdditions\Testing\WithApplicationTraitHooks;
 
 class MakeCommandTest extends TestCase
 {
+    use SimpleAnnotations;
     use WithApplicationTraitHooks;
 
     /**

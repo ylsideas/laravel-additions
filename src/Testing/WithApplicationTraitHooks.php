@@ -4,8 +4,6 @@ namespace YlsIdeas\LaravelAdditions\Testing;
 
 trait WithApplicationTraitHooks
 {
-    use SimpleAnnotations;
-
     /**
      * @before
      */

@@ -8,12 +8,14 @@ use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase;
 use YlsIdeas\LaravelAdditions\LaravelAdditionsServiceProvider;
+use YlsIdeas\LaravelAdditions\Testing\SimpleAnnotations;
 use YlsIdeas\LaravelAdditions\Testing\WithApplicationTraitHooks;
 use YlsIdeas\LaravelAdditions\Tests\Support\ManipulatesComposerJson;
 
 class ConfigureCommandsTest extends TestCase
 {
     use ManipulatesComposerJson;
+    use SimpleAnnotations;
     use WithApplicationTraitHooks;
 
     /**

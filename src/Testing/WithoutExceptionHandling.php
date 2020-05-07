@@ -6,8 +6,6 @@ use Illuminate\Foundation\Testing\TestCase;
 
 trait WithoutExceptionHandling
 {
-    use SimpleAnnotations;
-
     /**
      * @var array
      */
