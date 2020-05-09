@@ -47,6 +47,7 @@ class LaravelAdditionsServiceProvider extends ServiceProvider
                         function (Collection $commands) {
                             return $commands->merge(config('laravel_additions.use_configure_commands', [
                                 Commands\Configure::class,
+                                Commands\ConfigureComposer::class,
                                 Commands\ConfigureHelpers::class,
                                 Commands\ConfigureMacros::class,
                             ]));

@@ -91,6 +91,56 @@ class ConfigureCommandsTest extends TestCase
         File::delete(base_path('tests/macros.php'));
     }
 
+    public function testItConfiguresTheNameInComposerJson()
+    {
+        $this->artisan('configure:composer', ['--name' => 'ylsideas/test-project'])
+            ->assertExitCode(0);
+
+        $this->loadComposerJson()
+            ->assertName('ylsideas/test-project');
+    }
+
+    public function testItConfiguresTheLicenseByOptionInComposerJson()
+    {
+        $this->artisan('configure:composer', ['--license' => 'proprietary'])
+            ->assertExitCode(0);
+
+        $this->loadComposerJson()
+            ->assertLicense('proprietary');
+    }
+
+    public function testItConfiguresTheLicenseByAskingInComposerJson()
+    {
+        $this->artisan('configure:composer', ['--license' => true])
+            ->expectsQuestion('Which license should be used?', 'proprietary')
+            ->assertExitCode(0);
+
+        $this->loadComposerJson()
+            ->assertLicense('proprietary');
+    }
+
+    public function testItConfiguresTheDescriptionInComposerJson()
+    {
+        $this->artisan('configure:composer', ['--description' => true])
+            ->expectsQuestion('Describe your project: ', 'This is a laravel experiment.')
+            ->assertExitCode(0);
+
+        $this->loadComposerJson()
+            ->assertDescription('This is a laravel experiment.');
+    }
+
+    public function testItConfiguresTheKeywordsInComposerJson()
+    {
+        $this->artisan('configure:composer', ['--keyword' => ['experiment', 'application']])
+            ->assertExitCode(0);
+
+        $this->loadComposerJson()
+            ->assertKeywords([
+                'application',
+                'experiment'
+            ]);
+    }
+
     public function testItConfiguresAll()
     {
         $this->artisan('configure', ['--all' => true])->assertExitCode(0);

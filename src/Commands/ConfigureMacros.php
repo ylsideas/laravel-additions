@@ -6,11 +6,11 @@ namespace YlsIdeas\LaravelAdditions\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\File;
-use YlsIdeas\LaravelAdditions\Support\ManipulatesComposerJson;
+use YlsIdeas\LaravelAdditions\Support\ManipulatesProjectComposerJson;
 
 class ConfigureMacros extends Command
 {
-    use ManipulatesComposerJson;
+    use ManipulatesProjectComposerJson;
 
     /**
      * The console command name.
@@ -40,7 +40,7 @@ class ConfigureMacros extends Command
 
         $this->loadComposerJson();
         $this->createFile($path);
-        $this->addFile($relativePath, $dev);
+        $this->getComposerFile()->addFile($relativePath, $dev);
         $this->storeComposerJson();
         $composer->dumpAutoloads();
     }

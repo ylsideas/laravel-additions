@@ -7,7 +7,7 @@ namespace YlsIdeas\LaravelAdditions\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\File;
-use YlsIdeas\LaravelAdditions\Support\ManipulatesComposerJson;
+use YlsIdeas\LaravelAdditions\Support\ManipulatesProjectComposerJson;
 
 class Configure extends Command
 {
