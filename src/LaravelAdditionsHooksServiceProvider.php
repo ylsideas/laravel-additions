@@ -2,8 +2,7 @@
 
 namespace YlsIdeas\LaravelAdditions;
 
-use Hamcrest\Core\Set;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,16 +13,16 @@ class LaravelAdditionsHooksServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Setup::on(function (bool $inital, InputInterface $input, OutputInterface $output) {
-            return $this->onSetup($inital, $input, $output);
+        Setup::on(function (bool $initialising, Command $command) {
+            return $this->onSetup($initialising, $command);
         });
 
         Setup::beforeTesting(function (InputInterface $input, OutputInterface $output) {
             $this->beforeTesting($input, $output);
         });
 
-        Setup::afterTesting(function (InputInterface $input, OutputInterface $output) {
-            $this->afterTesting($input, $output);
+        Setup::afterTesting(function (bool $passed, InputInterface $input, OutputInterface $output) {
+            $this->afterTesting($passed, $input, $output);
         });
     }
 
@@ -34,7 +33,7 @@ class LaravelAdditionsHooksServiceProvider extends ServiceProvider
         }
     }
 
-    public function onSetup(bool $inital, InputInterface $input, OutputInterface $output) {
+    public function onSetup(bool $initialising, Command $command) {
         return true;
     }
 
@@ -42,7 +41,7 @@ class LaravelAdditionsHooksServiceProvider extends ServiceProvider
         File::cleanDirectory(storage_path('logs'));
     }
 
-    public function afterTesting(InputInterface $input, OutputInterface $output) {
+    public function afterTesting(bool $passed, InputInterface $input, OutputInterface $output) {
 
     }
 }

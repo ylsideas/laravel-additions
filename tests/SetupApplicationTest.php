@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use YlsIdeas\LaravelAdditions\Commands\Setup;
 use YlsIdeas\LaravelAdditions\LaravelAdditionsHooksServiceProvider;
 use YlsIdeas\LaravelAdditions\LaravelAdditionsServiceProvider;
 use YlsIdeas\LaravelAdditions\SetupApplication;
@@ -21,9 +22,9 @@ class SetupApplicationTest extends TestCase
 
         $flag = false;
 
-        $setup->on(function (bool $initalised) use (&$flag) {
+        $setup->on(function (bool $initialised) use (&$flag) {
             $flag = true;
-            $this->assertFalse($initalised);
+            $this->assertFalse($initialised);
 
             return true;
         });
@@ -40,9 +41,9 @@ class SetupApplicationTest extends TestCase
 
         $flag = false;
 
-        $setup->on(function (bool $initalised) use (&$flag) {
+        $setup->on(function (bool $initialised) use (&$flag) {
             $flag = true;
-            $this->assertTrue($initalised);
+            $this->assertTrue($initialised);
 
             return true;
         });
@@ -59,9 +60,9 @@ class SetupApplicationTest extends TestCase
 
         $flag = false;
 
-        $setup->on(function (bool $initalised) use (&$flag) {
+        $setup->on(function (bool $initialised) use (&$flag) {
             $flag = true;
-            $this->assertTrue($initalised);
+            $this->assertTrue($initialised);
 
             return false;
         });
@@ -78,10 +79,9 @@ class SetupApplicationTest extends TestCase
 
         $flag = false;
 
-        $setup->on(function (bool $initalised, $input, $output) use (&$flag) {
+        $setup->on(function (bool $initialised, $command) use (&$flag) {
             $flag = true;
-            $this->assertInstanceOf(InputInterface::class, $input);
-            $this->assertInstanceOf(OutputInterface::class, $output);
+            $this->assertInstanceOf(Setup::class, $command);
 
             return true;
         });
@@ -124,8 +124,10 @@ class SetupApplicationTest extends TestCase
             $artisan->resolveCommands(TestCommandDummy::class);
         });
 
-        $setup->afterTesting(function ($input, $output) use (&$flag) {
+        $setup->afterTesting(function ($passed, $input, $output) use (&$flag) {
             $flag = true;
+            $this->assertIsBool($passed);
+            $this->assertSame(true, $passed);
             $this->assertInstanceOf(InputInterface::class, $input);
             $this->assertInstanceOf(OutputInterface::class, $output);
         });

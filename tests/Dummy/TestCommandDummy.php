@@ -19,9 +19,16 @@ class TestCommandDummy extends Command
      * @var string
      */
     protected $description = 'Dummy for running tests.';
+    private $exitCode;
+
+    public function __construct($exitCode = 0)
+    {
+        parent::__construct();
+        $this->exitCode = $exitCode;
+    }
 
     public function handle()
     {
-
+        return $this->exitCode;
     }
 }

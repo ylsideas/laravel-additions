@@ -24,7 +24,7 @@ class Setup extends Command
 
     public function handle(SetupApplication $application)
     {
-        if ($application->execute((bool) $this->option('initial'), $this->input, $this->output)) {
+        if ($application->execute((bool) $this->option('initial'), $this)) {
             $this->line($this->option('initial') ? 'Initial Setup complete!' : 'Setup complete!');
             return 0;
         }

@@ -31,13 +31,13 @@ class SetupApplication
         $this->callable = $callable;
     }
 
-    public function execute(bool $firstTime, InputInterface $input, OutputInterface $output)
+    public function execute(bool $firstTime, Setup $command)
     {
         if (! is_callable($this->callable)) {
             throw new \RuntimeException('On setup hook has not been configured.');
         }
 
-        return call_user_func($this->callable, $firstTime, $input, $output);
+        return call_user_func($this->callable, $firstTime, $command);
     }
 
     public function beforeTesting(callable $callable)
@@ -65,7 +65,7 @@ class SetupApplication
                     return;
                 }
 
-                $callable($starting->input, $starting->output);
+                $callable($starting->exitCode === 0, $starting->input, $starting->output);
             }
         );
     }
