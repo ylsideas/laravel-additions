@@ -99,7 +99,7 @@ class ConfigureComposer extends Command
     protected function changeDescription()
     {
         if ($this->option('description')) {
-            $description = $this->ask('Describe your project: ');
+            $description = $this->ask('Describe your project');
             $this->getComposerFile()->setDescription($description);
         }
 

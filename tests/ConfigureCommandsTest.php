@@ -122,7 +122,7 @@ class ConfigureCommandsTest extends TestCase
     public function testItConfiguresTheDescriptionInComposerJson()
     {
         $this->artisan('configure:composer', ['--description' => true])
-            ->expectsQuestion('Describe your project: ', 'This is a laravel experiment.')
+            ->expectsQuestion('Describe your project', 'This is a laravel experiment.')
             ->assertExitCode(0);
 
         $this->loadComposerJson()
